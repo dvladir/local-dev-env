@@ -1,0 +1,45 @@
+version: '3.1'
+
+services:
+  dind:
+    image: "docker:dind"
+    privileged: true
+    restart: always
+    networks:
+      env-network:
+        aliases:
+          - docker
+    ports:
+    - 2376:2376
+    tty: true
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - jenkins-docker-certs:/certs/client
+    environment:
+      - DOCKER_TLS_CERTDIR=/certs
+  jenkins:
+    build:
+      context: ./blueocean
+    depends_on:
+      - "dind"
+    restart: always
+    networks:
+      - env-network
+    ports:
+      - 8888:8080
+    tty: true
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - jenkins-docker-certs:/certs/client:ro
+    environment:
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
+
+networks:
+  env-network:
+
+volumes:
+  jenkins-data:
+  jenkins-docker-certs:
+
