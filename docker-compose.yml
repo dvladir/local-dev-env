@@ -1,6 +1,15 @@
 version: '3.1'
 
 services:
+  nexus:
+    image: "sonatype/nexus3"
+    restart: always
+    networks:
+      - env-network
+    ports:
+      - 8887:8081
+    volumes:
+      - nexus-data:/nexus-data:z
   dind:
     image: "docker:dind"
     privileged: true
@@ -13,8 +22,8 @@ services:
     - 2376:2376
     tty: true
     volumes:
-      - jenkins-data:/var/jenkins_home
-      - jenkins-docker-certs:/certs/client
+      - jenkins-data:/var/jenkins_home:z
+      - jenkins-docker-certs:/certs/client:z
     environment:
       - DOCKER_TLS_CERTDIR=/certs
   jenkins:
@@ -29,17 +38,18 @@ services:
       - 8888:8080
     tty: true
     volumes:
-      - jenkins-data:/var/jenkins_home
+      - jenkins-data:/var/jenkins_home:z
       - jenkins-docker-certs:/certs/client:ro
     environment:
-      - DOCKER_HOST=tcp://docker:2376
       - DOCKER_CERT_PATH=/certs/client
       - DOCKER_TLS_VERIFY=1
+      - DOCKER_HOST=tcp://docker:2376
 
 networks:
   env-network:
 
 volumes:
+  nexus-data:
   jenkins-data:
   jenkins-docker-certs:
 
