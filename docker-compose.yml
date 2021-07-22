@@ -2,6 +2,7 @@ version: '3.1'
 
 services:
   nexus:
+    container_name: lde-nexus
     image: "sonatype/nexus3"
     restart: always
     networks:
@@ -11,6 +12,7 @@ services:
     volumes:
       - nexus-data:/nexus-data:z
   dind:
+    container_name: lde-dind
     image: "docker:dind"
     privileged: true
     restart: always
@@ -27,6 +29,7 @@ services:
     environment:
       - DOCKER_TLS_CERTDIR=/certs
   jenkins:
+    container_name: lde-jenkins
     build:
       context: ./blueocean
     depends_on:
@@ -47,6 +50,7 @@ services:
 
 networks:
   env-network:
+    name: lde-net
 
 volumes:
   nexus-data:
