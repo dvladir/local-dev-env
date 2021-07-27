@@ -33,7 +33,8 @@ services:
     build:
       context: ./blueocean
     depends_on:
-      - "dind"
+      - dind
+      - agent
     restart: always
     networks:
       - env-network
@@ -47,6 +48,26 @@ services:
       - DOCKER_CERT_PATH=/certs/client
       - DOCKER_TLS_VERIFY=1
       - DOCKER_HOST=tcp://docker:2376
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  agent:
+    container_name: lde-agent
+    build:
+      context: ./agent
+    depends_on:
+      - dind
+    tty: true
+    volumes:
+      - jenkins-agent:/home/jenkins
+      - jenkins-docker-certs:/certs/client:ro
+    networks:
+      - env-network
+    env_file:
+      - agent.env
+    environment:
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
+      - DOCKER_HOST=tcp://docker:2376
 
 networks:
   env-network:
@@ -56,4 +77,5 @@ volumes:
   nexus-data:
   jenkins-data:
   jenkins-docker-certs:
+  jenkins-agent:
 
