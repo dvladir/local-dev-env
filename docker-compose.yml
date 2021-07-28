@@ -10,43 +10,24 @@ services:
     ports:
       - 8887:8081
     volumes:
-      - nexus-data:/nexus-data:z
-  dind:
-    container_name: lde-dind
-    image: "docker:dind"
-    privileged: true
-    restart: always
-    networks:
-      env-network:
-        aliases:
-          - docker
-    ports:
-    - 2376:2376
-    tty: true
-    volumes:
-      - jenkins-data:/var/jenkins_home:z
-      - jenkins-docker-certs:/certs/client:z
-    environment:
-      - DOCKER_TLS_CERTDIR=/certs
+      - nexus-data:/nexus-data
   jenkins:
     container_name: lde-jenkins
     build:
-      context: ./blueocean
-    depends_on:
-      - "dind"
+      context: jenkins
+      args:
+        HOST_UID: ${HOST_UID}
+        HOST_GID: ${HOST_GID}
     restart: always
     networks:
       - env-network
     ports:
       - 8888:8080
+      - 50000:50000
     tty: true
     volumes:
-      - jenkins-data:/var/jenkins_home:z
-      - jenkins-docker-certs:/certs/client:ro
-    environment:
-      - DOCKER_CERT_PATH=/certs/client
-      - DOCKER_TLS_VERIFY=1
-      - DOCKER_HOST=tcp://docker:2376
+      - ${HOST_DOCKER}:/var/run/docker.sock
+      - ${HOST_JENKINS_DATA}:/var/jenkins_home
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
@@ -56,6 +37,3 @@ networks:
 
 volumes:
   nexus-data:
-  jenkins-data:
-  jenkins-docker-certs:
-
