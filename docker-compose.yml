@@ -21,10 +21,10 @@ services:
         aliases:
           - docker
     ports:
-    - 2376:2376
+      - 2376:2376
     tty: true
     volumes:
-      - jenkins-data:/var/jenkins_home:z
+#      - jenkins-data:/var/jenkins_home:z
       - jenkins-docker-certs:/certs/client:z
     environment:
       - DOCKER_TLS_CERTDIR=/certs
@@ -63,7 +63,7 @@ services:
     networks:
       - env-network
     env_file:
-      - agent.env
+      - ./agent/agent.env
     environment:
       - DOCKER_CERT_PATH=/certs/client
       - DOCKER_TLS_VERIFY=1
