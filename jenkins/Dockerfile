@@ -1,6 +1,7 @@
 FROM jenkins/jenkins:2.289.2-lts-jdk11
-ARG HOST_UID=1001
-ARG HOST_GID=967
+ARG HOST_JENKINS_UID=1001
+ARG HOST_JENKINS_GID=1001
+ARG HOST_DOCKER_GID=967
 USER root
 RUN apt-get update && apt-get install -y apt-transport-https \
     ca-certificates curl gnupg2 \
@@ -15,7 +16,8 @@ RUN curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-c
      -o /usr/local/bin/docker-compose && \
  chmod +x /usr/local/bin/docker-compose && \
  ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-RUN groupmod -g $HOST_GID docker
-RUN usermod -u $HOST_UID jenkins
+RUN groupmod -g $HOST_DOCKER_GID docker
+RUN groupmod -g $HOST_JENKINS_GID jenkins
+RUN usermod -u $HOST_JENKINS_GID jenkins
 RUN usermod -aG docker jenkins
 USER jenkins
