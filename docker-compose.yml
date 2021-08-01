@@ -24,7 +24,8 @@ services:
       - 2376:2376
     tty: true
     volumes:
-#      - jenkins-data:/var/jenkins_home:z
+      - jenkins-data:/var/jenkins_home:z
+      - jenkins-agent:/home/jenkins:z
       - jenkins-docker-certs:/certs/client:z
     environment:
       - DOCKER_TLS_CERTDIR=/certs
