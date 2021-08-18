@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+ssh-keyscan -H -p $SSH_HOST_PORT host.docker.internal >> "${JENKINS_AGENT_HOME}/.ssh/known_hosts"
+ssh-keyscan -H -p $SSH_HOST_PORT 172.17.0.1 >> "${JENKINS_AGENT_HOME}/.ssh/known_hosts"
+setup-sshd
