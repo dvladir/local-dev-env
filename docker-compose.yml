@@ -61,6 +61,7 @@ services:
     volumes:
       - jenkins-agent:/home/jenkins
       - jenkins-docker-certs:/certs/client:ro
+      - ./agent/ssh-conf:/home/jenkins/.ssh
     networks:
       - env-network
     env_file:
