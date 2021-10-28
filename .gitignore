@@ -1,3 +1,4 @@
 .idea
-agent.env
 ssh-conf
+*.jks
+*.env

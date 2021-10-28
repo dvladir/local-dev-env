@@ -33,6 +33,8 @@ services:
     container_name: lde-jenkins
     build:
       context: ./blueocean
+      args:
+        - ks_pass=${KEY_STORE_PASS}
     depends_on:
       - dind
       - agent
@@ -40,7 +42,7 @@ services:
     networks:
       - env-network
     ports:
-      - 8888:8080
+      - 8888:8083
     tty: true
     volumes:
       - jenkins-data:/var/jenkins_home:z
