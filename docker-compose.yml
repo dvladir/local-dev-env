@@ -62,6 +62,7 @@ services:
       - jenkins-agent:/home/jenkins
       - jenkins-docker-certs:/certs/client:ro
       - ./agent/ssh-conf:/home/jenkins/.ssh
+    restart: always
     networks:
       - env-network
     env_file:
