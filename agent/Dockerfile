@@ -11,8 +11,4 @@ RUN add-apt-repository \
 RUN apt-get update && apt-get install -y docker-ce-cli
 COPY setup-alt /usr/local/bin/setup-alt
 
-COPY root.crt /usr/local/share/ca-certificates/root.crt
-RUN chmod 644 /usr/local/share/ca-certificates/root.crt
-RUN update-ca-certificates
-
 ENTRYPOINT ["setup-alt"]

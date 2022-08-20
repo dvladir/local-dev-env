@@ -14,6 +14,8 @@ services:
   dind:
     container_name: lde-dind
     image: "docker:dind"
+    build:
+      context: ./dind
     privileged: true
     restart: always
     networks:

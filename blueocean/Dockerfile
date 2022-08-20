@@ -10,9 +10,5 @@ RUN add-apt-repository \
     $(lsb_release -cs) stable"
 RUN apt-get update && apt-get install -y docker-ce-cli
 
-COPY root.crt /usr/local/share/ca-certificates/root.crt
-RUN chmod 644 /usr/local/share/ca-certificates/root.crt
-RUN update-ca-certificates
-
 USER jenkins
 RUN jenkins-plugin-cli --plugins "blueocean:1.25.5 docker-workflow:1.28 locale:1.4 pipeline-npm:0.9.2"
