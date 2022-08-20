@@ -10,8 +10,8 @@ RUN add-apt-repository \
     $(lsb_release -cs) stable"
 RUN apt-get update && apt-get install -y docker-ce-cli
 
-RUN rsync /custom_certs /usr/local/share/ca-certificates
-RUN chmod -R 644 /usr/local/share/ca-certificates
+COPY root.crt /usr/local/share/ca-certificates/root.crt
+RUN chmod 644 /usr/local/share/ca-certificates/root.crt
 RUN update-ca-certificates
 
 USER jenkins

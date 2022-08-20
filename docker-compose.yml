@@ -45,7 +45,6 @@ services:
     volumes:
       - jenkins-data:/var/jenkins_home:z
       - jenkins-docker-certs:/certs/client:ro
-      - ./certs:/custom_certs
     environment:
       - DOCKER_CERT_PATH=/certs/client
       - DOCKER_TLS_VERIFY=1
@@ -63,7 +62,6 @@ services:
       - jenkins-agent:/home/jenkins
       - jenkins-docker-certs:/certs/client:ro
       - ./agent/ssh-conf:/home/jenkins/.ssh
-      - ./agent/certs:/custom_certs
     restart: always
     networks:
       - env-network
